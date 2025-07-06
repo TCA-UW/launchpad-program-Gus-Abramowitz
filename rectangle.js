@@ -1,7 +1,7 @@
 const areaFormula = (length, width) => length * width;
 
-let length = 5;
-let width = 3;
+let length = 10;
+let width = 5;
 
 let area = areaFormula(length, width);
-console.log(`Area of rectangle: ${area}`);
+console.log("The area of the rectangle is:", area);
