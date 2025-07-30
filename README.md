@@ -1,0 +1,1 @@
+My schema is designed to support a gamified to-do list app with user accounts, task tracking, and visual rewards. I created separate tables for users, tasks, and characters, and used foreign keys to connect them. My custom feature is task deadlines, which I added to the tasks table so each task can have a due date. 
