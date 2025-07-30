@@ -1,15 +1,34 @@
+import React, { useEffect, useState } from 'react';
+import { createClient } from '@supabase/supabase-js';
+
 import './App.css';
-import React, { useState } from 'react';
 import AddTaskForm from './AddTaskForm';
 import TasksList from './TasksList';
 import FilterButtons from './filterButtons';
 
+const supabase = createClient(
+  process.env.REACT_APP_SUPABASE_URL,
+  process.env.REACT_APP_SUPABASE_ANON_KEY
+);
+
 function App() {
-const [ tasks, changeTask ] = useState([
-  { id: 1, text: "Finish coding", completed: false },
-  { id: 2, text: "Market research", completed: true },
-  { id: 3, text: "Eat food", completed: true }
-]);
+  const [ tasks, changeTask ] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [filter, setFilter] = useState('All');
+
+useEffect(() => {
+    async function fetchTasks() {
+      const { data, error } = await supabase.from('tasks').select('*');
+      if (error) {
+        console.error('Error fetching tasks:', error.message);
+      } else {
+        changeTask(data);
+      }
+      setLoading(false);
+    }
+
+    fetchTasks();
+  }, []);
 
 const AddTask = (Task) => {
   changeTask([...tasks, Task]);
@@ -27,8 +46,6 @@ const toggleTask = (taskId) => {
     const updatedTasks = tasks.filter(task => task.id !== taskID);
     changeTask(updatedTasks);
   }
-
-  const [filter, setFilter] = useState('All');
 
   const filteredTasks = tasks.filter(task => {
     if (filter === 'All') return true;
